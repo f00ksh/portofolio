@@ -1,170 +1,234 @@
-// portfolio_home_page.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:portfolio_web/cards/about/about_section_card.dart';
-import 'package:portfolio_web/cards/award/award_section.dart';
-import 'package:portfolio_web/cards/contact/contact_section_card.dart';
-import 'package:portfolio_web/cards/home/hero_section_card.dart';
-import 'package:portfolio_web/cards/projects/projects_section_card.dart';
-import 'package:portfolio_web/cards/skills/newflame.dart';
 import 'package:portfolio_web/navigation/portfolio_navigation.dart';
 import 'package:portfolio_web/providers/scrolling_providers.dart';
+import 'package:portfolio_web/screens/about/about_section_card.dart';
+import 'package:portfolio_web/screens/award/award_section.dart';
+import 'package:portfolio_web/screens/contact/contact_section_card.dart';
+import 'package:portfolio_web/screens/home/hero_section_card.dart';
+import 'package:portfolio_web/screens/projects/projects_section_card.dart';
+import 'package:portfolio_web/screens/skills/skills.dart';
 
-class PortfolioHomePage extends ConsumerStatefulWidget {
+class PortfolioHomePage extends ConsumerWidget {
   const PortfolioHomePage({super.key});
 
-  @override
-  ConsumerState<PortfolioHomePage> createState() => _PortfolioHomePageState();
-}
+  static const List<Widget> _sections = [
+    HeroSectionCard(),
+    ExperienceScreen(),
+    GameRectangle(), // Skills section
+    CertificationsSectionCard(),
+    ProjectsSectionCard(),
+    ContactSectionCard(),
+  ];
 
-class _PortfolioHomePageState extends ConsumerState<PortfolioHomePage> {
-  static const double maxOverlap = 500.0;
-  double _lastCalculatedTotalHeight = 0.0;
-  double _lastScrollOffset = 0.0;
-  
-  // Direct widget list instead of sections
-  late final List<Widget> _widgets;
-
-  @override
-  void initState() {
-    super.initState();
-    _widgets = [
-      const HeroSectionCard(),
-      const ExperienceScreen(),
-      const GameRectangle(), // Skills section
-      const AwardsSectionCard(),
-      const ProjectsSectionCard(),
-      const ContactSectionCard(),
-    ];
-  }
+  static const double _maxOverlap = 500.0;
+  static const Color _backgroundColor = Color(0xFFd661ff);
 
   @override
-  Widget build(BuildContext context) {
-    final scrollController = ref.watch(scrollControllerProvider);
-
-    final effectiveScreenHeight = ref.watch(
-      effectiveScreenHeightProvider(context),
-    );
-    
-    // Use a more efficient approach to watch totalHeight
-    final scrollOffset = ref.watch(scrollOffsetProvider);
-    final totalHeight = ref.watch(
-      totalHeightProvider(context, _widgets.length),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final scrollParams = (
+      sectionCount: _sections.length,
+      screenHeight: screenHeight,
     );
 
-    // Only update screen height when it actually changes
-    if (_lastCalculatedTotalHeight != totalHeight) {
-      _lastCalculatedTotalHeight = totalHeight;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref
-            .read(scrollStateNotifierProvider.notifier)
-            .updateScreenHeight(effectiveScreenHeight);
-      });
-    }
+    final scrollController = ref
+        .watch(scrollControllerNotifierProvider(scrollParams).notifier)
+        .controller;
+    final totalHeight =
+        (_sections.length - 1) * screenHeight * 0.8 + screenHeight;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFd661ff),
-      body: CustomScrollView(
-        controller: scrollController,
-        physics: const BouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics(),
-        ),
-        slivers: [
-          // Navigation SliverAppBar
-          const PortfolioSliverNavigation(),
-
-          // Stacked Cards Content
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: totalHeight - 25,
-              child: _buildStackedCards(context),
-            ),
+      backgroundColor: _backgroundColor,
+      body: Stack(
+        children: [
+          CustomScrollView(
+            controller: scrollController,
+            slivers: [
+              SliverToBoxAdapter(
+                child: SizedBox(
+                  height: totalHeight,
+                  child: _StackedCardsView(
+                    sections: _sections,
+                    maxOverlap: _maxOverlap,
+                    scrollParams: scrollParams,
+                  ),
+                ),
+              ),
+            ],
           ),
+          // Your existing navigation with scroll params
+          PortfolioNavigation(scrollParams: scrollParams),
         ],
       ),
     );
   }
+}
 
-  Widget _buildStackedCards(BuildContext context) {
-    final scrollState = ref.watch(scrollStateNotifierProvider);
-    final screenHeight = ref.watch(effectiveScreenHeightProvider(context));
-    final scrollOffset = scrollState.offset;
-    final sectionCount = _widgets.length;
-    
-    // Skip rebuilding if scroll hasn't changed significantly
-    if ((scrollOffset - _lastScrollOffset).abs() < 5) {
-      return RepaintBoundary(
-        child: _buildStackedCardsContent(screenHeight, _lastScrollOffset, sectionCount),
-      );
-    }
-    
-    _lastScrollOffset = scrollOffset;
-    
-    return RepaintBoundary(
-      child: _buildStackedCardsContent(screenHeight, scrollOffset, sectionCount),
+class _StackedCardsView extends ConsumerWidget {
+  const _StackedCardsView({
+    required this.sections,
+    required this.maxOverlap,
+    required this.scrollParams,
+  });
+
+  final List<Widget> sections;
+  final double maxOverlap;
+  final ({int sectionCount, double screenHeight}) scrollParams;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final scrollState = ref.watch(
+      scrollControllerNotifierProvider(scrollParams),
     );
-  }
-  
-  Widget _buildStackedCardsContent(double screenHeight, double scrollOffset, int sectionCount) {
-    double spacingFactor = 1.0;
-    if (scrollOffset > 0) {
-      spacingFactor =
-          0.8 +
-          (scrollOffset / (screenHeight * sectionCount)) *
-              0.58;
 
-      spacingFactor = spacingFactor.clamp(0.0, .8);
-    }
-
-    final baseStride = screenHeight * spacingFactor;
-    final halfStep = screenHeight * 0.5;
-
-    return Stack(
-      children: List.generate(sectionCount, (i) {
-        final revIndex = sectionCount - 1 - i;
-
-        // Calculate card offset
-        double cardOffset = 0.0;
-        for (int j = 0; j < revIndex; j++) {
-          final cardScrollOffset = scrollOffset - (j * baseStride);
-          final overlapProgress = (cardScrollOffset / halfStep).clamp(0.0, 1);
-
-          // Add special case handling to match the provider implementation
-          double currentOverlap = maxOverlap * (1.0 - overlapProgress);
-          if (j == 3) { // Award to Projects transition
-            currentOverlap = 0.0;
-          }
-
-          cardOffset += baseStride - currentOverlap;
-        }
-
-        // Calculate translation
-        final scrollProgress = (scrollOffset - cardOffset) / halfStep;
-        final clamped = scrollProgress.clamp(0.0, 9.0);
-        final translateY = -clamped * 125;
-
-        return Positioned(
-          top: cardOffset + translateY,
-          left: 0,
-          right: 0,
-          child: SizedBox(height: screenHeight, child: _widgets[revIndex]),
-        );
-      }),
+    return RepaintBoundary(
+      child: _StackedCards(
+        sections: sections,
+        maxOverlap: maxOverlap,
+        screenHeight: scrollParams.screenHeight,
+        scrollOffset: scrollState.offset,
+        currentSection: scrollState.currentSection,
+        sectionProgress: scrollState.sectionProgress,
+      ),
     );
   }
 }
 
-// Extension to access scroll functionality from anywhere
-extension ScrollExtension on WidgetRef {
-  void scrollToSection(int sectionIndex) {
-    read(scrollStateNotifierProvider.notifier).scrollToSection(sectionIndex);
+class _StackedCards extends StatelessWidget {
+  const _StackedCards({
+    required this.sections,
+    required this.maxOverlap,
+    required this.screenHeight,
+    required this.scrollOffset,
+    required this.currentSection,
+    required this.sectionProgress,
+  });
+
+  final List<Widget> sections;
+  final double maxOverlap;
+  final double screenHeight;
+  final double scrollOffset;
+  final int currentSection;
+  final double sectionProgress;
+
+  @override
+  Widget build(BuildContext context) {
+    final sectionCount = sections.length;
+    final spacingFactor = _calculateSpacingFactor(
+      scrollOffset,
+      screenHeight,
+      sectionCount,
+    );
+    final baseStride = screenHeight * spacingFactor;
+    final halfStep = screenHeight * 0.5;
+
+    return Stack(
+      children: [
+        for (int i = 0; i < sectionCount; i++)
+          _StackedCard(
+            section: sections[sectionCount - 1 - i], // Reverse order
+            screenHeight: screenHeight,
+            cardOffset: _calculateCardOffset(
+              sectionCount - 1 - i,
+              scrollOffset,
+              baseStride,
+              halfStep,
+              maxOverlap,
+            ),
+            translateY: _calculateTranslateY(
+              scrollOffset,
+              _calculateCardOffset(
+                sectionCount - 1 - i,
+                scrollOffset,
+                baseStride,
+                halfStep,
+                maxOverlap,
+              ),
+              halfStep,
+            ),
+            isCurrentSection: (sectionCount - 1 - i) == currentSection,
+            sectionProgress: (sectionCount - 1 - i) == currentSection
+                ? sectionProgress
+                : 0.0,
+          ),
+      ],
+    );
   }
 
-  void scrollToTop() {
-    read(scrollStateNotifierProvider.notifier).scrollToTop();
+  // Your existing calculation methods remain the same...
+  double _calculateSpacingFactor(
+    double scrollOffset,
+    double screenHeight,
+    int sectionCount,
+  ) {
+    if (scrollOffset <= 0) return 1.0;
+    final factor = 0.8 + (scrollOffset / (screenHeight * sectionCount)) * 0.58;
+    return factor.clamp(0.0, 0.8);
   }
 
-  double get currentScrollOffset => watch(scrollOffsetProvider);
-  int get currentSection => watch(currentSectionProvider);
-  bool get isScrolling => watch(isScrollingProvider);
+  double _calculateCardOffset(
+    int revIndex,
+    double scrollOffset,
+    double baseStride,
+    double halfStep,
+    double maxOverlap,
+  ) {
+    double cardOffset = 0.0;
+    for (int j = 0; j < revIndex; j++) {
+      final cardScrollOffset = scrollOffset - (j * baseStride);
+      final overlapProgress = (cardScrollOffset / halfStep).clamp(0.0, 1.0);
+      final currentOverlap = maxOverlap * (1.0 - overlapProgress);
+      cardOffset += baseStride - currentOverlap;
+    }
+    return cardOffset;
+  }
+
+  double _calculateTranslateY(
+    double scrollOffset,
+    double cardOffset,
+    double halfStep,
+  ) {
+    final scrollProgress = (scrollOffset - cardOffset) / halfStep;
+    final clamped = scrollProgress.clamp(0.0, 9.0);
+    return -clamped * 140;
+  }
+}
+
+class _StackedCard extends StatelessWidget {
+  const _StackedCard({
+    required this.section,
+    required this.screenHeight,
+    required this.cardOffset,
+    required this.translateY,
+    required this.isCurrentSection,
+    required this.sectionProgress,
+  });
+
+  final Widget section;
+  final double screenHeight;
+  final double cardOffset;
+  final double translateY;
+  final bool isCurrentSection;
+  final double sectionProgress;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: cardOffset + translateY,
+      left: 0,
+      right: 0,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        height: screenHeight,
+        decoration: BoxDecoration(
+          // Optional: Add visual feedback for current section
+          border: isCurrentSection
+              ? Border.all(color: Colors.white.withOpacity(0.3), width: 2)
+              : null,
+        ),
+        child: section,
+      ),
+    );
+  }
 }

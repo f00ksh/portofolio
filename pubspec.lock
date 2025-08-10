@@ -49,14 +49,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.13.0"
-  bazel_worker:
-    dependency: transitive
-    description:
-      name: bazel_worker
-      sha256: "373a6ef07caa6c674c1cf144a5fe1e0f712c040552031ce669f298e35f7e110a"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.3"
   boolean_selector:
     dependency: transitive
     description:
@@ -89,14 +81,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.4"
-  build_modules:
-    dependency: transitive
-    description:
-      name: build_modules
-      sha256: b4f8d74125ab53869e63d488b8df2a036a7136d3b6d1759d3247e4d8d2e8f379
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.0.15"
   build_resolvers:
     dependency: transitive
     description:
@@ -121,14 +105,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "9.1.2"
-  build_web_compilers:
-    dependency: "direct dev"
-    description:
-      name: build_web_compilers
-      sha256: "7c82235c82657efa0e6e877ef813757c7fd9e0e0406106f32ab30a874c939c63"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.2.0"
   built_collection:
     dependency: transitive
     description:
@@ -269,10 +245,10 @@ packages:
     dependency: "direct main"
     description:
       name: flame
-      sha256: ec0d2a536b543ff7c611a6fd331c24004590b8d898b4bd2feef7fe29eeeb7eca
+      sha256: c50e2f39e118f5f6a6f3339ce6825ee803c7e5fada95ec50fb02eb27944e0e76
       url: "https://pub.dev"
     source: hosted
-    version: "1.30.0"
+    version: "1.30.1"
   flame_forge2d:
     dependency: "direct main"
     description:
@@ -281,6 +257,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.19.0+3"
+  flame_svg:
+    dependency: "direct main"
+    description:
+      name: flame_svg
+      sha256: "351e8562bc9387697370e9fefe56ac00b7779b071303df212ecaa83df5d19a4d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.11.14"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -520,14 +504,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.11.1"
-  memoize:
-    dependency: "direct main"
-    description:
-      name: memoize
-      sha256: "51481d328c86cbdc59711369179bac88551ca0556569249be5317e66fc796cac"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.0"
   meta:
     dependency: transitive
     description:
@@ -664,14 +640,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.3"
-  protobuf:
-    dependency: transitive
-    description:
-      name: protobuf
-      sha256: "579fe5557eae58e3adca2e999e38f02441d8aa908703854a9e0a0f47fa857731"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.1.0"
   pub_semver:
     dependency: transitive
     description:
@@ -692,18 +660,18 @@ packages:
     dependency: "direct main"
     description:
       name: rive
-      sha256: cd45b071b288e4bef05f25423e1001a9b3218b81745deae18c9b4d2a2952cc56
+      sha256: "2551a44fa766a7ed3f52aa2b94feda6d18d00edc25dee5f66e72e9b365bb6d6c"
       url: "https://pub.dev"
     source: hosted
-    version: "0.13.14"
+    version: "0.13.20"
   rive_common:
     dependency: transitive
     description:
       name: rive_common
-      sha256: c7bf0781b1621629361579c300ac2f8aa1a238227a242202a596e82becc244d7
+      sha256: "2ba42f80d37a4efd0696fb715787c4785f8a13361e8aea9227c50f1e78cf763a"
       url: "https://pub.dev"
     source: hosted
-    version: "0.4.11"
+    version: "0.4.15"
   riverpod:
     dependency: transitive
     description:
@@ -736,14 +704,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.6.5"
-  scratch_space:
-    dependency: transitive
-    description:
-      name: scratch_space
-      sha256: "816989dd0a1f92cd5f0db012ed330035571034956dc3593fba66aaa6ee6a7e43"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.0"
   shelf:
     dependency: transitive
     description:
@@ -781,14 +741,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.5"
-  source_maps:
-    dependency: transitive
-    description:
-      name: source_maps
-      sha256: "190222579a448b03896e0ca6eca5998fa810fda630c1d65e2f78b3f638f54812"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.10.13"
   source_span:
     dependency: transitive
     description:
@@ -942,7 +894,7 @@ packages:
     source: hosted
     version: "1.1.2"
   web:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: web
       sha256: "868d88a33d8a87b18ffc05f9f030ba328ffefba92d6c127917a2ba740f9cfe4a"
@@ -990,5 +942,5 @@ packages:
     source: hosted
     version: "3.1.3"
 sdks:
-  dart: ">=3.8.1 <3.10.0-z"
+  dart: ">=3.8.1 <4.0.0"
   flutter: ">=3.27.1"

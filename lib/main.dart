@@ -4,7 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'screens/portfolio_home_page.dart';
 
 void main() {
-  runApp(ProviderScope(child: PortfolioApp()));
+  // Ensure Flutter is initialized
+  WidgetsFlutterBinding.ensureInitialized();
+
+  runApp(const ProviderScope(child: PortfolioApp()));
 }
 
 class PortfolioApp extends StatelessWidget {

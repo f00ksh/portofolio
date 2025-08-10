@@ -6,59 +6,8 @@ part of 'scrolling_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$scrollOffsetHash() => r'd43c5d3348cb8d6307ae3f2bdf65bf0cc8a125e1';
-
-/// See also [scrollOffset].
-@ProviderFor(scrollOffset)
-final scrollOffsetProvider = AutoDisposeProvider<double>.internal(
-  scrollOffset,
-  name: r'scrollOffsetProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$scrollOffsetHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ScrollOffsetRef = AutoDisposeProviderRef<double>;
-String _$currentSectionHash() => r'425d2f91a9b65c5df4144125e122e1a88124e85e';
-
-/// See also [currentSection].
-@ProviderFor(currentSection)
-final currentSectionProvider = AutoDisposeProvider<int>.internal(
-  currentSection,
-  name: r'currentSectionProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$currentSectionHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef CurrentSectionRef = AutoDisposeProviderRef<int>;
-String _$isScrollingHash() => r'a38c068b2ee7fa316247c75c460693ca250f1991';
-
-/// See also [isScrolling].
-@ProviderFor(isScrolling)
-final isScrollingProvider = AutoDisposeProvider<bool>.internal(
-  isScrolling,
-  name: r'isScrollingProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$isScrollingHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef IsScrollingRef = AutoDisposeProviderRef<bool>;
-String _$effectiveScreenHeightHash() =>
-    r'e59c589040e7d40e9b9044ada676ee3c50490ab0';
+String _$scrollControllerNotifierHash() =>
+    r'61ac93c076879c0c8ad421984d48414e26b734e5';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -81,25 +30,34 @@ class _SystemHash {
   }
 }
 
-/// See also [effectiveScreenHeight].
-@ProviderFor(effectiveScreenHeight)
-const effectiveScreenHeightProvider = EffectiveScreenHeightFamily();
+abstract class _$ScrollControllerNotifier
+    extends BuildlessAutoDisposeNotifier<ScrollState> {
+  late final ({double screenHeight, int sectionCount}) params;
 
-/// See also [effectiveScreenHeight].
-class EffectiveScreenHeightFamily extends Family<double> {
-  /// See also [effectiveScreenHeight].
-  const EffectiveScreenHeightFamily();
+  ScrollState build(({double screenHeight, int sectionCount}) params);
+}
 
-  /// See also [effectiveScreenHeight].
-  EffectiveScreenHeightProvider call(BuildContext context) {
-    return EffectiveScreenHeightProvider(context);
+/// See also [ScrollControllerNotifier].
+@ProviderFor(ScrollControllerNotifier)
+const scrollControllerNotifierProvider = ScrollControllerNotifierFamily();
+
+/// See also [ScrollControllerNotifier].
+class ScrollControllerNotifierFamily extends Family<ScrollState> {
+  /// See also [ScrollControllerNotifier].
+  const ScrollControllerNotifierFamily();
+
+  /// See also [ScrollControllerNotifier].
+  ScrollControllerNotifierProvider call(
+    ({double screenHeight, int sectionCount}) params,
+  ) {
+    return ScrollControllerNotifierProvider(params);
   }
 
   @override
-  EffectiveScreenHeightProvider getProviderOverride(
-    covariant EffectiveScreenHeightProvider provider,
+  ScrollControllerNotifierProvider getProviderOverride(
+    covariant ScrollControllerNotifierProvider provider,
   ) {
-    return call(provider.context);
+    return call(provider.params);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -114,71 +72,77 @@ class EffectiveScreenHeightFamily extends Family<double> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'effectiveScreenHeightProvider';
+  String? get name => r'scrollControllerNotifierProvider';
 }
 
-/// See also [effectiveScreenHeight].
-class EffectiveScreenHeightProvider extends AutoDisposeProvider<double> {
-  /// See also [effectiveScreenHeight].
-  EffectiveScreenHeightProvider(BuildContext context)
-    : this._internal(
-        (ref) =>
-            effectiveScreenHeight(ref as EffectiveScreenHeightRef, context),
-        from: effectiveScreenHeightProvider,
-        name: r'effectiveScreenHeightProvider',
+/// See also [ScrollControllerNotifier].
+class ScrollControllerNotifierProvider
+    extends
+        AutoDisposeNotifierProviderImpl<ScrollControllerNotifier, ScrollState> {
+  /// See also [ScrollControllerNotifier].
+  ScrollControllerNotifierProvider(
+    ({double screenHeight, int sectionCount}) params,
+  ) : this._internal(
+        () => ScrollControllerNotifier()..params = params,
+        from: scrollControllerNotifierProvider,
+        name: r'scrollControllerNotifierProvider',
         debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
             ? null
-            : _$effectiveScreenHeightHash,
-        dependencies: EffectiveScreenHeightFamily._dependencies,
+            : _$scrollControllerNotifierHash,
+        dependencies: ScrollControllerNotifierFamily._dependencies,
         allTransitiveDependencies:
-            EffectiveScreenHeightFamily._allTransitiveDependencies,
-        context: context,
+            ScrollControllerNotifierFamily._allTransitiveDependencies,
+        params: params,
       );
 
-  EffectiveScreenHeightProvider._internal(
+  ScrollControllerNotifierProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.context,
+    required this.params,
   }) : super.internal();
 
-  final BuildContext context;
+  final ({double screenHeight, int sectionCount}) params;
 
   @override
-  Override overrideWith(
-    double Function(EffectiveScreenHeightRef provider) create,
-  ) {
+  ScrollState runNotifierBuild(covariant ScrollControllerNotifier notifier) {
+    return notifier.build(params);
+  }
+
+  @override
+  Override overrideWith(ScrollControllerNotifier Function() create) {
     return ProviderOverride(
       origin: this,
-      override: EffectiveScreenHeightProvider._internal(
-        (ref) => create(ref as EffectiveScreenHeightRef),
+      override: ScrollControllerNotifierProvider._internal(
+        () => create()..params = params,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        context: context,
+        params: params,
       ),
     );
   }
 
   @override
-  AutoDisposeProviderElement<double> createElement() {
-    return _EffectiveScreenHeightProviderElement(this);
+  AutoDisposeNotifierProviderElement<ScrollControllerNotifier, ScrollState>
+  createElement() {
+    return _ScrollControllerNotifierProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is EffectiveScreenHeightProvider && other.context == context;
+    return other is ScrollControllerNotifierProvider && other.params == params;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, context.hashCode);
+    hash = _SystemHash.combine(hash, params.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -186,183 +150,25 @@ class EffectiveScreenHeightProvider extends AutoDisposeProvider<double> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin EffectiveScreenHeightRef on AutoDisposeProviderRef<double> {
-  /// The parameter `context` of this provider.
-  BuildContext get context;
+mixin ScrollControllerNotifierRef
+    on AutoDisposeNotifierProviderRef<ScrollState> {
+  /// The parameter `params` of this provider.
+  ({double screenHeight, int sectionCount}) get params;
 }
 
-class _EffectiveScreenHeightProviderElement
-    extends AutoDisposeProviderElement<double>
-    with EffectiveScreenHeightRef {
-  _EffectiveScreenHeightProviderElement(super.provider);
+class _ScrollControllerNotifierProviderElement
+    extends
+        AutoDisposeNotifierProviderElement<
+          ScrollControllerNotifier,
+          ScrollState
+        >
+    with ScrollControllerNotifierRef {
+  _ScrollControllerNotifierProviderElement(super.provider);
 
   @override
-  BuildContext get context => (origin as EffectiveScreenHeightProvider).context;
+  ({double screenHeight, int sectionCount}) get params =>
+      (origin as ScrollControllerNotifierProvider).params;
 }
 
-String _$totalHeightHash() => r'95a0a93184b96ae02652921a063d9e59e0c4f005';
-
-/// See also [totalHeight].
-@ProviderFor(totalHeight)
-const totalHeightProvider = TotalHeightFamily();
-
-/// See also [totalHeight].
-class TotalHeightFamily extends Family<double> {
-  /// See also [totalHeight].
-  const TotalHeightFamily();
-
-  /// See also [totalHeight].
-  TotalHeightProvider call(BuildContext context, int widgetCount) {
-    return TotalHeightProvider(context, widgetCount);
-  }
-
-  @override
-  TotalHeightProvider getProviderOverride(
-    covariant TotalHeightProvider provider,
-  ) {
-    return call(provider.context, provider.widgetCount);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'totalHeightProvider';
-}
-
-/// See also [totalHeight].
-class TotalHeightProvider extends AutoDisposeProvider<double> {
-  /// See also [totalHeight].
-  TotalHeightProvider(BuildContext context, int widgetCount)
-    : this._internal(
-        (ref) => totalHeight(ref as TotalHeightRef, context, widgetCount),
-        from: totalHeightProvider,
-        name: r'totalHeightProvider',
-        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-            ? null
-            : _$totalHeightHash,
-        dependencies: TotalHeightFamily._dependencies,
-        allTransitiveDependencies: TotalHeightFamily._allTransitiveDependencies,
-        context: context,
-        widgetCount: widgetCount,
-      );
-
-  TotalHeightProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.context,
-    required this.widgetCount,
-  }) : super.internal();
-
-  final BuildContext context;
-  final int widgetCount;
-
-  @override
-  Override overrideWith(double Function(TotalHeightRef provider) create) {
-    return ProviderOverride(
-      origin: this,
-      override: TotalHeightProvider._internal(
-        (ref) => create(ref as TotalHeightRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        context: context,
-        widgetCount: widgetCount,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeProviderElement<double> createElement() {
-    return _TotalHeightProviderElement(this);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is TotalHeightProvider &&
-        other.context == context &&
-        other.widgetCount == widgetCount;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, context.hashCode);
-    hash = _SystemHash.combine(hash, widgetCount.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
-}
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin TotalHeightRef on AutoDisposeProviderRef<double> {
-  /// The parameter `context` of this provider.
-  BuildContext get context;
-
-  /// The parameter `widgetCount` of this provider.
-  int get widgetCount;
-}
-
-class _TotalHeightProviderElement extends AutoDisposeProviderElement<double>
-    with TotalHeightRef {
-  _TotalHeightProviderElement(super.provider);
-
-  @override
-  BuildContext get context => (origin as TotalHeightProvider).context;
-  @override
-  int get widgetCount => (origin as TotalHeightProvider).widgetCount;
-}
-
-String _$scrollControllerHash() => r'066076c17943fbd8c228a1c09617c3cd6de613eb';
-
-/// See also [ScrollController].
-@ProviderFor(ScrollController)
-final scrollControllerProvider =
-    AutoDisposeNotifierProvider<
-      ScrollController,
-      flutter.ScrollController
-    >.internal(
-      ScrollController.new,
-      name: r'scrollControllerProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$scrollControllerHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
-
-typedef _$ScrollController = AutoDisposeNotifier<flutter.ScrollController>;
-String _$scrollStateNotifierHash() =>
-    r'8572c0f37b3eb5c8d525b8c6903c90b0752d690c';
-
-/// See also [ScrollStateNotifier].
-@ProviderFor(ScrollStateNotifier)
-final scrollStateNotifierProvider =
-    AutoDisposeNotifierProvider<ScrollStateNotifier, ScrollState>.internal(
-      ScrollStateNotifier.new,
-      name: r'scrollStateNotifierProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$scrollStateNotifierHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
-
-typedef _$ScrollStateNotifier = AutoDisposeNotifier<ScrollState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

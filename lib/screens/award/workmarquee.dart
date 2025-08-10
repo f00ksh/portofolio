@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:portfolio_web/providers/scrolling_providers.dart'
-    hide ScrollController;
 
 class WorkMarquee extends ConsumerStatefulWidget {
   const WorkMarquee({super.key});
@@ -80,9 +78,12 @@ class _WorkMarqueeState extends ConsumerState<WorkMarquee>
   @override
   Widget build(BuildContext context) {
     // Listen to scroll changes
-    ref.listen(scrollOffsetProvider, (previous, current) {
-      _handleScrollChange(current);
-    });
+    // ref.listen(
+    //   scrollControllerManagerProvider.select((state) => state.offset),
+    //   (previous, current) {
+    //     _handleScrollChange(current);
+    //   },
+    // );
 
     return Transform.rotate(
       angle: -0.04,

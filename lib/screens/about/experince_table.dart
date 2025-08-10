@@ -25,15 +25,11 @@ class _ExperienceTableState extends State<ExperienceTable> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(color: Color(0xFF57ef97)),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final width = constraints.maxWidth;
-          final horizontalPadding = _getHorizontalPadding(width);
-
-          return ListView.builder(
-            padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+    return Column(
+      children: [
+        // Table content
+        Expanded(
+          child: ListView.builder(
             itemCount: widget.experiences.length,
             itemBuilder: (context, index) {
               final experience = widget.experiences[index];
@@ -45,17 +41,10 @@ class _ExperienceTableState extends State<ExperienceTable> {
                 onToggle: () => _toggleExpansion(index),
               );
             },
-          );
-        },
-      ),
+          ),
+        ),
+      ],
     );
-  }
-
-  double _getHorizontalPadding(double width) {
-    if (width < 600) return 0.0;
-    if (width < 1000) return width * 0.03;
-    if (width < 1400) return width * 0.15;
-    return width * 0.2;
   }
 }
 
