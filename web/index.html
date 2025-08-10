@@ -18,21 +18,60 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="description" content="Portfolio Website">
 
   <!-- iOS meta tags & icons -->
-  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="portfolio_web">
+  <meta name="apple-mobile-web-app-title" content="Portfolio">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <!-- Wasm loading optimization -->
+  <link rel="preload" as="fetch" crossorigin="anonymous" href="main.dart.js_1.part.js">
+  <link rel="preload" as="fetch" crossorigin="anonymous" href="assets/packages/wasm/wasm_runtime.wasm">
 
-  <title>portfolio_web</title>
-  <link rel="manifest" href="manifest.json">
+  <title>Portfolio</title>
+  <style>
+    .loading {
+      position: fixed;
+      z-index: 999;
+      height: 100%;
+      width: 100%;
+      background: #d661ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .loading-content {
+      text-align: center;
+      color: white;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .loading-text {
+      margin-top: 20px;
+      font-size: 24px;
+    }
+
+    body {
+      background-color: #d661ff;
+    }
+  </style>
 </head>
 <body>
-  <script src="flutter_bootstrap.js" async></script>
+  <div id="loading" class="loading">
+    <div class="loading-content">
+      <div class="loading-text">Loading...</div>
+    </div>
+  </div>
+
+  <script>
+    // Remove loading indicator once app is loaded
+    window.addEventListener('load', function() {
+      document.getElementById('loading').remove();
+    });
+  </script>
+  <script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>
