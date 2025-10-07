@@ -43,9 +43,10 @@ class ContactSectionCard extends ConsumerWidget {
 
     return Container(
       color: const Color(0xffffcb46),
-      height: screenHeight,
+      constraints: BoxConstraints(minHeight: screenHeight),
       width: screenWidth,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(height: ResponsiveSize.vh(context, 8)),
           Padding(
@@ -69,9 +70,12 @@ class ContactSectionCard extends ConsumerWidget {
           ),
           SizedBox(height: ResponsiveSize.vh(context, 3)),
           if (!isSent)
-            SizedBox(
-              height: (screenHeight * 0.7).clamp(400.0, 700.0),
-              child: Stack(
+            Flexible(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: (screenHeight * 0.7).clamp(400.0, 700.0),
+                ),
+                child: Stack(
                 alignment: Alignment.topCenter,
                 children: [
                   Lottie.asset(
@@ -92,7 +96,9 @@ class ContactSectionCard extends ConsumerWidget {
                     alignment: Alignment.bottomCenter,
                     child: Container(
                       width: isMobile ? screenWidth * 0.9 : screenWidth * 0.65,
-                      height: screenHeight * 0.65,
+                      constraints: BoxConstraints(
+                        maxHeight: screenHeight * 0.65,
+                      ),
                       padding: !isMobile
                           ? const EdgeInsets.symmetric(horizontal: 24)
                           : const EdgeInsets.symmetric(horizontal: 16),
@@ -180,7 +186,7 @@ class ContactSectionCard extends ConsumerWidget {
                             // Send button
                             CustomSendButtonAnimated(),
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.1,
+                              height: isMobile ? 12 : 16,
                             ),
                           ],
                         ),
@@ -201,6 +207,7 @@ class ContactSectionCard extends ConsumerWidget {
                     frameRate: FrameRate.max,
                   ),
                 ],
+              ),
               ),
             )
           else
