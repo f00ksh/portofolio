@@ -16,13 +16,10 @@ class PortfolioApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Software Engineer Portfolio',
+      title: 'Mohamed Fouda',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.purple,
-        fontFamily: 'Inter',
-        useMaterial3: true,
-      ),
+      theme: ThemeData(primarySwatch: Colors.purple, useMaterial3: true),
+      // Removed global textScaler - using responsive text styles instead
       home: const PortfolioHomePage(),
     );
   }

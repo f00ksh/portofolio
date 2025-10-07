@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio_web/constants/app_text_styles.dart';
 
 class ProjectsSectionCard extends StatelessWidget {
   const ProjectsSectionCard({super.key});
@@ -7,15 +8,16 @@ class ProjectsSectionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height,
-
       color: Colors.black,
-
       child: Column(
         children: [
-          Spacer(),
-          const Text(
+          const Spacer(),
+          Text(
             'Featured Projects',
-            style: TextStyle(fontSize: 48, fontWeight: FontWeight.w900),
+            textAlign: TextAlign.center,
+            style: AppTextStyles.sectionTitle(context).copyWith(
+              color: Colors.white,
+            ),
           ),
           const Spacer(),
         ],
@@ -23,7 +25,3 @@ class ProjectsSectionCard extends StatelessWidget {
     );
   }
 }
-
-
-//////////////////
-///

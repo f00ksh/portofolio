@@ -7,7 +7,7 @@ import 'package:portfolio_web/screens/award/award_section.dart';
 import 'package:portfolio_web/screens/contact/contact_section_card.dart';
 import 'package:portfolio_web/screens/home/hero_section_card.dart';
 import 'package:portfolio_web/screens/projects/projects_section_card.dart';
-import 'package:portfolio_web/screens/skills/skills.dart';
+import 'package:portfolio_web/screens/skills/bento_skills_section.dart';
 
 class PortfolioHomePage extends ConsumerWidget {
   const PortfolioHomePage({super.key});
@@ -15,7 +15,7 @@ class PortfolioHomePage extends ConsumerWidget {
   static const List<Widget> _sections = [
     HeroSectionCard(),
     ExperienceScreen(),
-    GameRectangle(), // Skills section
+    BentoSkillsSection(), // Skills section - NEW!
     CertificationsSectionCard(),
     ProjectsSectionCard(),
     ContactSectionCard(),

@@ -32,6 +32,8 @@ class CertificationsSectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 768;
+
     return Column(
       children: [
         Expanded(
@@ -53,29 +55,33 @@ class CertificationsSectionCard extends StatelessWidget {
               // Content overlay
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 120.0),
+                padding: EdgeInsets.symmetric(
+                  horizontal: isMobile ? 20.0 : 60.0,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const SizedBox(height: 80),
-                    const _Header(),
-                    const SizedBox(height: 40),
+                    SizedBox(height: isMobile ? 40 : 60),
+                    _Header(isMobile: isMobile),
+                    SizedBox(height: isMobile ? 16 : 24),
                     Expanded(
                       child: ListView.separated(
                         physics: const BouncingScrollPhysics(),
                         itemCount: _certificationsData.length,
                         separatorBuilder: (context, index) =>
-                            const SizedBox(height: 30),
+                            SizedBox(height: isMobile ? 16 : 24),
                         itemBuilder: (context, index) {
                           final certification = _certificationsData[index];
                           return CertificationCard(
                             title: certification['title']!,
                             issuer: certification['issuer']!,
                             year: certification['year']!,
+                            isMobile: isMobile,
                           );
                         },
                       ),
                     ),
+                    SizedBox(height: isMobile ? 16 : 24),
                   ],
                 ),
               ),
@@ -89,16 +95,18 @@ class CertificationsSectionCard extends StatelessWidget {
 }
 
 class _Header extends StatelessWidget {
-  const _Header();
+  final bool isMobile;
+  const _Header({required this.isMobile});
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Text(
         'Certifications',
+        textAlign: TextAlign.center,
         style: GoogleFonts.anton(
-          fontSize: 100,
-          letterSpacing: 4,
+          fontSize: isMobile ? 36 : 80,
+          letterSpacing: isMobile ? 2 : 4,
           fontWeight: FontWeight.w900,
           color: Colors.white,
           shadows: [
@@ -118,18 +126,94 @@ class CertificationCard extends StatelessWidget {
   final String title;
   final String issuer;
   final String year;
+  final bool isMobile;
 
   const CertificationCard({
     super.key,
     required this.title,
     required this.issuer,
     required this.year,
+    required this.isMobile,
   });
 
   @override
   Widget build(BuildContext context) {
+    if (isMobile) {
+      return _buildMobileCard();
+    }
+    return _buildDesktopCard();
+  }
+
+  Widget _buildMobileCard() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.95),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.white.withOpacity(0.3), width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.15),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              // Year badge
+              Container(
+                width: 60,
+                height: 60,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFd661ff),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Text(
+                  year,
+                  style: GoogleFonts.anton(
+                    fontSize: 20,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Padding(
+            padding: const EdgeInsets.only(left: 72),
+            child: Text(
+              issuer,
+              style: const TextStyle(
+                fontSize: 13,
+                color: Colors.black54,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDesktopCard() {
+    return Container(
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.95),
         borderRadius: BorderRadius.circular(20),
@@ -149,9 +233,9 @@ class CertificationCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // year badge
+          // Year badge
           Container(
-            margin: const EdgeInsets.only(right: 16),
+            margin: const EdgeInsets.only(right: 20),
             width: 80,
             height: 80,
             alignment: Alignment.center,
