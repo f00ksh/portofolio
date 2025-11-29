@@ -4,7 +4,6 @@ import 'package:portfolio_web/screens/about/animated_text.dart';
 import 'package:portfolio_web/screens/about/data.dart';
 import 'package:portfolio_web/screens/about/experince_table.dart';
 import 'package:portfolio_web/screens/about/rive_animation.dart';
-import 'package:portfolio_web/theme/responsive_theme.dart';
 import 'package:portfolio_web/utils/responsive_sizing.dart';
 import 'package:portfolio_web/utils/responsive_utils.dart';
 
@@ -41,7 +40,15 @@ class ExperienceScreen extends StatelessWidget {
 
           // Main content
           Padding(
-            padding: ResponsiveSize.padding(context, all: 5),
+            padding: ResponsiveSize.padding(
+              context,
+              top: 5,
+              bottom: 5,
+              horizontal:
+                  Responsive.isMobile(context) || Responsive.isTablet(context)
+                  ? 0
+                  : 5,
+            ),
             child: _buildMainContent(context),
           ),
 
@@ -59,9 +66,10 @@ class ExperienceScreen extends StatelessWidget {
               width: double.infinity,
               color: const Color(0xFF57ef97),
               child: Padding(
-                padding: ResponsiveTheme.getResponsiveHorizontalPadding(
-                  context,
-                  scale: Responsive.isDesktop(context) ? 1.5 : 1.0,
+                padding: EdgeInsets.symmetric(
+                  horizontal: Responsive.isDesktop(context)
+                      ? ResponsiveSize.width(context, desktopFactor: 0.08)
+                      : 0,
                 ),
                 child: ExperienceTable(experiences: experiences),
               ),
@@ -87,8 +95,8 @@ class ExperienceScreen extends StatelessWidget {
   }
 
   Widget _buildMobileLayout(BuildContext context) {
-    // Use height-aware sizing
-    final animSize = ResponsiveSize.vhSize(context, mobile: 120, tablet: 150, desktop: 180);
+    // Use height-aware sizing - reduced for mobile
+    final animSize = ResponsiveSize.vhSize(context, mobile: 180);
 
     return Column(
       children: [
@@ -99,41 +107,66 @@ class ExperienceScreen extends StatelessWidget {
           child: const RubensRiveAnimation(),
         ),
 
-        SizedBox(height: ResponsiveSize.space(context, 3)),
+        SizedBox(height: ResponsiveSize.space(context, 1)),
 
-        // Description
-        _buildDescriptionCard(context, padding: 15, borderRadius: 15),
+        // Description - reduced padding with external margin
+        Padding(
+          padding: ResponsiveSize.padding(
+            context,
+            top: 30,
+            left: 30,
+            right: 30,
+          ),
+          child: _buildDescriptionCard(context, padding: 8, borderRadius: 12),
+        ),
       ],
     );
   }
 
   Widget _buildTabletLayout(BuildContext context) {
-    // Scale animation with viewport height
-    final animSize = ResponsiveSize.vhSize(context, mobile: 200, tablet: 250, desktop: 300);
+    // Scale animation with viewport height - increased size
+    final animSize = ResponsiveSize.vhSize(
+      context,
+      mobile: 300,
+      tablet: 400,
+      desktop: 500,
+    );
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        // Profile animation - height-responsive
-        SizedBox(
-          width: animSize,
-          height: animSize,
-          child: const RubensRiveAnimation(),
-        ),
+    return Padding(
+      padding: ResponsiveSize.padding(context, horizontal: 3),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Profile animation - height-responsive
+          SizedBox(
+            width: animSize,
+            height: animSize,
+            child: const RubensRiveAnimation(),
+          ),
 
-        SizedBox(width: ResponsiveSize.space(context, 4)),
+          SizedBox(width: ResponsiveSize.space(context, 4)),
 
-        // Description
-        Expanded(
-          child: _buildDescriptionCard(context, padding: 20, borderRadius: 16),
-        ),
-      ],
+          // Description - increased padding
+          Expanded(
+            child: _buildDescriptionCard(
+              context,
+              padding: 28,
+              borderRadius: 16,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
   Widget _buildDesktopLayout(BuildContext context) {
     // Scale animation with viewport height
-    final animSize = ResponsiveSize.vhSize(context, mobile: 300, tablet: 350, desktop: 400);
+    final animSize = ResponsiveSize.vhSize(
+      context,
+      mobile: 300,
+      tablet: 400,
+      desktop: 500,
+    );
 
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -151,11 +184,11 @@ class ExperienceScreen extends StatelessWidget {
 
           SizedBox(width: ResponsiveSize.space(context, 5)),
 
-          // Description
+          // Description - increased padding
           Expanded(
             child: _buildDescriptionCard(
               context,
-              padding: 28,
+              padding: 32,
               borderRadius: 20,
             ),
           ),

@@ -2,7 +2,13 @@
   "permissions": {
     "allow": [
       "Bash(flutter analyze:*)",
-      "Bash(flutter pub:*)"
+      "Bash(flutter pub:*)",
+      "Bash(timeout:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nFix layout overflow errors in contact section\n\n- Changed container to use minHeight constraint instead of fixed height\n- Made Column flexible with mainAxisSize.min to prevent overflow\n- Wrapped form Stack in Flexible widget for adaptive sizing\n- Reduced excessive bottom spacing from 10vh to 12-16px\n- Changed form height to maxHeight constraint for flexibility\n\nThis resolves the RenderFlex overflow errors (2.6px and larger) that were appearing in the contact section.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push:*)",
+      "Bash(git commit:*)",
+      "Read(//c/Users/fooks/OneDrive/Desktop/**)"
     ],
     "deny": [],
     "ask": []

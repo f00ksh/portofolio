@@ -24,8 +24,8 @@ class BentoSkillsSection extends StatelessWidget {
           // Header
           Padding(
             padding: EdgeInsets.only(
-              top: ResponsiveSize.vh(context, 8),
-              bottom: ResponsiveSize.vh(context, 4),
+              top: ResponsiveSize.vh(context, 4),
+              bottom: ResponsiveSize.vh(context, 2),
             ),
             child: Text(
               "Technology & Skills",
@@ -33,9 +33,9 @@ class BentoSkillsSection extends StatelessWidget {
               style: TextStyle(
                 fontSize: ResponsiveSize.text(
                   context,
-                  mobile: 36,
-                  tablet: 64,
-                  desktop: 80,
+                  mobile: 28,
+                  tablet: 48,
+                  desktop: 64,
                 ),
                 fontWeight: FontWeight.w900,
                 color: Colors.black,
@@ -45,59 +45,74 @@ class BentoSkillsSection extends StatelessWidget {
             ),
           ),
 
-          // Skills Grid
+          // Skills Grid - No Scroll
           Expanded(
             child: Padding(
               padding: ResponsiveSize.padding(
                 context,
-                horizontal: isMobile ? 4 : 8,
-                vertical: 4,
+                horizontal: isMobile ? 16 : 32,
+                vertical: 5,
               ),
               child: isMobile
                   ? _buildMobileGrid(context)
                   : _buildDesktopGrid(context),
             ),
           ),
+          SizedBox(height: ResponsiveSize.vh(context, 2)),
         ],
       ),
     );
   }
 
   Widget _buildMobileGrid(BuildContext context) {
-    // 2-column grid for mobile
-    return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 12,
-        crossAxisSpacing: 12,
-        childAspectRatio: 1.0,
-      ),
-      itemCount: techStackList.length,
-      itemBuilder: (context, index) {
-        return _SkillCard(
-          tech: techStackList[index],
-          delay: index * 100,
+    final columns = 3;
+    final rows = (techStackList.length / columns).ceil();
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final itemWidth =
+            (constraints.maxWidth - (12 * (columns - 1))) / columns;
+        final itemHeight = (constraints.maxHeight - (12 * (rows - 1))) / rows;
+
+        return Wrap(
+          spacing: 12,
+          runSpacing: 12,
+          children: List.generate(
+            techStackList.length,
+            (index) => SizedBox(
+              width: itemWidth,
+              height: itemHeight,
+              child: _SkillCard(tech: techStackList[index], delay: index * 100),
+            ),
+          ),
         );
       },
     );
   }
 
   Widget _buildDesktopGrid(BuildContext context) {
-    final isTablet = Responsive.isTablet(context) || Responsive.isTabletLarge(context);
-    final columns = isTablet ? 4 : 5;
+    final isTablet =
+        Responsive.isTablet(context) || Responsive.isTabletLarge(context);
+    final columns = isTablet ? 5 : 6;
+    final rows = (techStackList.length / columns).ceil();
 
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: columns,
-        mainAxisSpacing: 16,
-        crossAxisSpacing: 16,
-        childAspectRatio: 1.0,
-      ),
-      itemCount: techStackList.length,
-      itemBuilder: (context, index) {
-        return _SkillCard(
-          tech: techStackList[index],
-          delay: index * 100,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final itemWidth =
+            (constraints.maxWidth - (16 * (columns - 1))) / columns;
+        final itemHeight = (constraints.maxHeight - (16 * (rows - 1))) / rows;
+
+        return Wrap(
+          spacing: 16,
+          runSpacing: 16,
+          children: List.generate(
+            techStackList.length,
+            (index) => SizedBox(
+              width: itemWidth,
+              height: itemHeight,
+              child: _SkillCard(tech: techStackList[index], delay: index * 100),
+            ),
+          ),
         );
       },
     );
@@ -108,10 +123,7 @@ class _SkillCard extends StatefulWidget {
   final TechStack tech;
   final int delay;
 
-  const _SkillCard({
-    required this.tech,
-    required this.delay,
-  });
+  const _SkillCard({required this.tech, required this.delay});
 
   @override
   State<_SkillCard> createState() => _SkillCardState();
@@ -125,88 +137,79 @@ class _SkillCardState extends State<_SkillCard> {
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOutCubic,
-        transform: Matrix4.identity()
-          ..translate(
-            _isHovered ? -4.0 : 0.0,
-            _isHovered ? -4.0 : 0.0,
-          ),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.black, width: 3),
-          boxShadow: [
-            BoxShadow(
-              offset: Offset(_isHovered ? 8 : 4, _isHovered ? 8 : 4),
-              color: Colors.black,
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // SVG Icon
-            SvgPicture.asset(
-              widget.tech.svgPath,
-              width: ResponsiveSize.vhSize(
-                context,
-                mobile: 40,
-                tablet: 50,
-                desktop: 60,
-              ),
-              height: ResponsiveSize.vhSize(
-                context,
-                mobile: 40,
-                tablet: 50,
-                desktop: 60,
-              ),
-            ),
-            SizedBox(height: ResponsiveSize.space(context, 2)),
-            // Tech Name
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text(
-                widget.tech.name,
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: ResponsiveSize.text(
-                    context,
-                    mobile: 12,
-                    tablet: 14,
-                    desktop: 16,
-                  ),
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black87,
+      child:
+          AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeOutCubic,
+                transform: Matrix4.identity()
+                  ..translate(_isHovered ? -4.0 : 0.0, _isHovered ? -4.0 : 0.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.black, width: 3),
+                  boxShadow: [
+                    BoxShadow(
+                      offset: Offset(_isHovered ? 8 : 4, _isHovered ? 8 : 4),
+                      color: Colors.black,
+                    ),
+                  ],
                 ),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    // Calculate icon size based on available space
+                    final iconSize = constraints.maxHeight * 0.5;
+                    final fontSize = constraints.maxHeight * 0.12;
+
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // SVG Icon
+                        SvgPicture.asset(
+                          widget.tech.svgPath,
+                          width: iconSize.clamp(30, 60),
+                          height: iconSize.clamp(30, 60),
+                        ),
+                        SizedBox(height: constraints.maxHeight * 0.05),
+                        // Tech Name
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Text(
+                            widget.tech.name,
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: fontSize.clamp(10, 16),
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              )
+              .animate()
+              .fadeIn(
+                duration: 600.ms,
+                delay: widget.delay.ms,
+                curve: Curves.easeOut,
+              )
+              .slideY(
+                begin: 0.3,
+                end: 0,
+                duration: 600.ms,
+                delay: widget.delay.ms,
+                curve: Curves.easeOutCubic,
+              )
+              .scale(
+                begin: const Offset(0.8, 0.8),
+                end: const Offset(1.0, 1.0),
+                duration: 600.ms,
+                delay: widget.delay.ms,
+                curve: Curves.easeOutBack,
               ),
-            ),
-          ],
-        ),
-      )
-          .animate()
-          .fadeIn(
-            duration: 600.ms,
-            delay: widget.delay.ms,
-            curve: Curves.easeOut,
-          )
-          .slideY(
-            begin: 0.3,
-            end: 0,
-            duration: 600.ms,
-            delay: widget.delay.ms,
-            curve: Curves.easeOutCubic,
-          )
-          .scale(
-            begin: const Offset(0.8, 0.8),
-            end: const Offset(1.0, 1.0),
-            duration: 600.ms,
-            delay: widget.delay.ms,
-            curve: Curves.easeOutBack,
-          ),
     );
   }
 }
