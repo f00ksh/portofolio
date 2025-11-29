@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:portfolio_web/constants/app_colors.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'send_button.g.dart';
@@ -7,7 +8,6 @@ part 'send_button.g.dart';
 class CustomSendButtonAnimated extends ConsumerStatefulWidget {
   const CustomSendButtonAnimated({super.key});
 
-  @override
   @override
   ConsumerState<CustomSendButtonAnimated> createState() =>
       _CustomSendButtonAnimatedState();
@@ -36,7 +36,7 @@ class _CustomSendButtonAnimatedState
           0,
         ),
         decoration: BoxDecoration(
-          color: const Color(0xFF57E89E),
+          color: AppColors.sendButtonBg,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: Colors.black, width: 2),
           boxShadow: [

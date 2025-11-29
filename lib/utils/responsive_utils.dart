@@ -75,14 +75,4 @@ class Responsive {
     }
     return mobile;
   }
-
-  // @deprecated - Use responsive sizing utilities instead
-  @Deprecated('Use ResponsiveSize utilities instead')
-  static double scaleFactor(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    if (width < tablet) return 1.0;
-    if (width < tabletLarge) return 1.1;
-    if (width < desktop) return 1.2;
-    return 1.3;
-  }
 }

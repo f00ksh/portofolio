@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:portfolio_web/constants/app_colors.dart';
 import 'package:portfolio_web/screens/award/workmarquee.dart';
+import 'package:portfolio_web/utils/responsive_utils.dart';
 
 class CertificationsSectionCard extends StatelessWidget {
   const CertificationsSectionCard({super.key});
@@ -32,7 +34,7 @@ class CertificationsSectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = MediaQuery.of(context).size.width < 768;
+    final isMobile = Responsive.isMobile(context);
 
     return Column(
       children: [
@@ -42,7 +44,7 @@ class CertificationsSectionCard extends StatelessWidget {
               // Lottie animation background
               Positioned.fill(
                 child: Container(
-                  color: const Color(0xFFd661ff),
+                  color: AppColors.certificationBadgeBg,
                   child: Lottie.asset(
                     'assets/animations/award.json',
                     fit: BoxFit.cover,
@@ -170,7 +172,7 @@ class CertificationCard extends StatelessWidget {
                 height: 60,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFd661ff),
+                  color: AppColors.certificationBadgeBg,
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Text(
@@ -240,7 +242,7 @@ class CertificationCard extends StatelessWidget {
             height: 80,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: const Color(0xFFd661ff),
+              color: AppColors.certificationBadgeBg,
               borderRadius: BorderRadius.circular(40),
             ),
             child: Text(

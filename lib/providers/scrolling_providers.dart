@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio_web/models/scroll_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../models/scroll_state.dart';
 
 part 'scrolling_providers.g.dart';
 

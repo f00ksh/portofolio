@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio_web/constants/app_colors.dart';
 import 'package:portfolio_web/constants/app_text_styles.dart';
 import 'package:portfolio_web/screens/about/animated_text.dart';
 import 'package:portfolio_web/screens/about/data.dart';
@@ -57,7 +58,7 @@ class ExperienceScreen extends StatelessWidget {
           Expanded(
             child: Container(
               width: double.infinity,
-              color: const Color(0xFF57ef97),
+              color: AppColors.experienceTableBg,
               child: Padding(
                 padding: ResponsiveTheme.getResponsiveHorizontalPadding(
                   context,
