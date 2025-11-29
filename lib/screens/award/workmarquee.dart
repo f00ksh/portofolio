@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:portfolio_web/constants/app_colors.dart';
 
 class WorkMarquee extends ConsumerStatefulWidget {
   const WorkMarquee({super.key});
@@ -77,14 +78,6 @@ class _WorkMarqueeState extends ConsumerState<WorkMarquee>
 
   @override
   Widget build(BuildContext context) {
-    // Listen to scroll changes
-    // ref.listen(
-    //   scrollControllerManagerProvider.select((state) => state.offset),
-    //   (previous, current) {
-    //     _handleScrollChange(current);
-    //   },
-    // );
-
     return Transform.rotate(
       angle: -0.04,
       child: Container(
@@ -95,7 +88,7 @@ class _WorkMarqueeState extends ConsumerState<WorkMarquee>
             top: BorderSide(width: 2),
             bottom: BorderSide(width: 2),
           ),
-          color: Color(0xFFFFC107),
+          color: AppColors.workMarqueeBg,
         ),
         child: ClipRect(
           child: OverflowBox(

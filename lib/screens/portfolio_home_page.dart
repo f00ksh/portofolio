@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:portfolio_web/constants/app_colors.dart';
 import 'package:portfolio_web/navigation/portfolio_navigation.dart';
 import 'package:portfolio_web/providers/scrolling_providers.dart';
 import 'package:portfolio_web/screens/about/about_section_card.dart';
@@ -22,7 +23,7 @@ class PortfolioHomePage extends ConsumerWidget {
   ];
 
   static const double _maxOverlap = 500.0;
-  static const Color _backgroundColor = Color(0xFFd661ff);
+  static const Color _backgroundColor = AppColors.heroBg;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

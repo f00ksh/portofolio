@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:portfolio_web/constants/app_colors.dart';
 import 'package:portfolio_web/models/tech_stack.dart';
 import 'package:portfolio_web/utils/responsive_sizing.dart';
 import 'package:portfolio_web/utils/responsive_utils.dart';
@@ -14,7 +15,7 @@ class BentoSkillsSection extends StatelessWidget {
 
     return Container(
       decoration: const BoxDecoration(
-        color: Color(0xffffcb46),
+        color: AppColors.skillsGridBg,
         border: Border.fromBorderSide(
           BorderSide(color: Colors.black, width: 3),
         ),

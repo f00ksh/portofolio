@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
+import 'package:portfolio_web/constants/app_colors.dart';
 import 'package:portfolio_web/constants/app_text_styles.dart';
 import 'package:portfolio_web/utils/responsive_sizing.dart';
 import 'package:portfolio_web/utils/responsive_utils.dart';
@@ -39,7 +40,7 @@ class _HeroSectionCardState extends ConsumerState<HeroSectionCard>
     // final availableHeight = size.height - navHeight;
     return Container(
       height: size.height,
-      decoration: const BoxDecoration(color: Color(0xFFd661ff)),
+      decoration: const BoxDecoration(color: AppColors.heroBg),
       child: Stack(
         children: [
           // Main content centered with proper spacing

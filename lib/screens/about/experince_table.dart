@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:portfolio_web/constants/app_colors.dart';
 
 class ExperienceTable extends StatefulWidget {
   final List<ExperienceItem> experiences;
@@ -193,7 +194,7 @@ class ExperienceExpandableContent extends StatelessWidget {
       height: isExpanded ? 200 : 0,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: const Color(0xFFFFD700),
+        color: AppColors.experienceDetailsBg,
         border: Border.all(color: Colors.black, width: 2),
       ),
       curve: Curves.easeInOut,
